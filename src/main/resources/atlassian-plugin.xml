@@ -1,24 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
-
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="workhours-plugin"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="workhours-plugin-resources" name="workhours-plugin Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="workhours-plugin.css" location="/css/workhours-plugin.css"/>
-        <resource type="download" name="workhours-plugin.js" location="/js/workhours-plugin.js"/>
-        <resource type="download" name="images/" location="/images"/>
-
-        <context>workhours-plugin</context>
-    </web-resource>
-    
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <resource type="i18n" name="i18n" location="workhours-plugin"/>
+  <repository-hook key="workhours-hook" name="Workhours Hook" i18n-name-key="workhours-hook.name"
+                   class="com.grin.bitbucket.plugin.workhours.hook.WorkhoursHook">
+    <description key="workhours-hook.description">The Workhours Hook Plugin</description>
+    <icon>icon-calendar.png</icon>
+    <config-form name="Workhours plugin config" key="workhours-config">
+      <view>com.grin.bitbucket.plugin.workhours.config.formContents</view>
+      <directory location="/static/"/>
+    </config-form>
+    <validator>com.grin.bitbucket.plugin.workhours.hook.WorkhoursValidator</validator>
+  </repository-hook>
 </atlassian-plugin>

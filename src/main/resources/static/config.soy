@@ -1,0 +1,26 @@
+{namespace com.grin.bitbucket.plugin.workhours.config}
+
+/**
+ * @param config
+ * @param? errors
+ */
+{template .formContents}
+    {call aui.form.textField}
+        {param id: 'startTime' /}
+        {param value: $config['startTime'] /}
+        {param labelContent: getText('workhours.config.labelStart') /}
+        {param placeholderText: '10:00' /}
+        {param isRequired: 'true' /}
+        {param fieldWidth: 'short' /}
+        {param errorTexts: $errors ? $errors['startTime'] : null /}
+    {/call}
+    {call aui.form.textField}
+        {param id: 'endTime' /}
+        {param value: $config['endTime'] /}
+        {param labelContent: getText('workhours.config.labelEnd') /}
+        {param placeholderText: '18:00' /}
+        {param isRequired: true /}
+        {param fieldWidth: 'short' /}
+        {param errorTexts: $errors ? $errors['endTime'] : null /}
+    {/call}
+{/template}

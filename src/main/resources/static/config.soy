@@ -9,7 +9,7 @@
         {param id: 'startTime' /}
         {param value: $config['startTime'] /}
         {param labelContent: getText('workhours.config.labelStart') /}
-        {param placeholderText: '9:00' /}
+        {param placeholderText: '9:01' /}
         {param isRequired: true /}
         {param fieldWidth: 'short' /}
         {param errorTexts: $errors ? $errors['startTime'] : null /}
@@ -22,5 +22,32 @@
         {param isRequired: true /}
         {param fieldWidth: 'short' /}
         {param errorTexts: $errors ? $errors['endTime'] : null /}
+    {/call}
+    {call aui.form.checkboxField}
+        {param id: 'fieldset' /}
+        {param legendContent: 'Select working days:' /}
+        {param fields: [
+            ['id': 'monday',
+            'labelText': 'Monday',
+            'isChecked': $config['monday'] ],
+            ['id': 'tuesday',
+            'labelText': 'Tuesday',
+            'isChecked': $config['tuesday'] ],
+            ['id': 'wednesday',
+            'labelText': 'Wednesday',
+            'isChecked': $config['wednesday'] ],
+            ['id': 'thursday',
+            'labelText': 'Thursday',
+            'isChecked': $config['thursday'] ],
+            ['id': 'friday',
+            'labelText': 'Friday',
+            'isChecked': $config['friday'] ],
+            ['id': 'saturday',
+            'labelText': 'Saturday',
+            'isChecked': $config['saturday'] ],
+            ['id': 'sunday',
+            'labelText': 'Sunday',
+            'isChecked': $config['sunday'] ],
+        ] /}
     {/call}
 {/template}

@@ -5,6 +5,7 @@ import com.atlassian.bitbucket.hook.repository.PreRepositoryHookContext;
 import com.atlassian.bitbucket.hook.repository.RepositoryHookRequest;
 import com.atlassian.bitbucket.hook.repository.RepositoryHookResult;
 import com.atlassian.bitbucket.i18n.I18nService;
+import com.atlassian.bitbucket.setting.Settings;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class WorkhoursHook implements PreRepositoryHook<RepositoryHookRequest> {
     private final I18nService i18nService;
@@ -38,10 +38,18 @@ public class WorkhoursHook implements PreRepositoryHook<RepositoryHookRequest> {
         LocalTime startTime = LocalTime.parse(context.getSettings().getString("startTime"), TIME_FORMATTER);
         LocalTime endTime = LocalTime.parse(context.getSettings().getString("endTime"), TIME_FORMATTER);
         LocalTime now = LocalTime.now();
-        List<DayOfWeek> weekend = Arrays.asList(DayOfWeek.SATURDAY,
-                                                DayOfWeek.SUNDAY);
-        boolean isWeekend = weekend.contains(LocalDate.now().getDayOfWeek());
-        if (now.isBefore(startTime) || now.isAfter(endTime) || isWeekend) {
+        Map<DayOfWeek, Boolean> workdays = new HashMap<DayOfWeek, Boolean>();
+        workdays.put(DayOfWeek.MONDAY, context.getSettings().getBoolean("monday", false));
+        workdays.put(DayOfWeek.TUESDAY, context.getSettings().getBoolean("tuesday", false));
+        workdays.put(DayOfWeek.WEDNESDAY, context.getSettings().getBoolean("wednesday", false));
+        workdays.put(DayOfWeek.THURSDAY, context.getSettings().getBoolean("thursday", false));
+        workdays.put(DayOfWeek.FRIDAY, context.getSettings().getBoolean("friday", false));
+        workdays.put(DayOfWeek.SATURDAY, context.getSettings().getBoolean("saturday", false));
+        workdays.put(DayOfWeek.SUNDAY, context.getSettings().getBoolean("sunday", false));
+
+        boolean isWorkday = workdays.get(LocalDate.now().getDayOfWeek());
+
+        if (now.isBefore(startTime) || now.isAfter(endTime) || !isWorkday) {
             String summaryMesssage = i18nService.getMessage("workhours.summary");
             String detailedMessage = i18nService.getMessage("workhours.detailed", startTime, endTime);
             return RepositoryHookResult.rejected(summaryMesssage, detailedMessage);

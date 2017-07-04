@@ -9,11 +9,15 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
+import java.util.Arrays;
+import java.util.List;
 
 public class WorkhoursHook implements PreRepositoryHook<RepositoryHookRequest> {
     private final I18nService i18nService;
@@ -34,8 +38,10 @@ public class WorkhoursHook implements PreRepositoryHook<RepositoryHookRequest> {
         LocalTime startTime = LocalTime.parse(context.getSettings().getString("startTime"), TIME_FORMATTER);
         LocalTime endTime = LocalTime.parse(context.getSettings().getString("endTime"), TIME_FORMATTER);
         LocalTime now = LocalTime.now();
-
-        if (now.isBefore(startTime) || now.isAfter(endTime)) {
+        List<DayOfWeek> weekend = Arrays.asList(DayOfWeek.SATURDAY,
+                                                DayOfWeek.SUNDAY);
+        boolean isWeekend = weekend.contains(LocalDate.now().getDayOfWeek());
+        if (now.isBefore(startTime) || now.isAfter(endTime) || isWeekend) {
             String summaryMesssage = i18nService.getMessage("workhours.summary");
             String detailedMessage = i18nService.getMessage("workhours.detailed", startTime, endTime);
             return RepositoryHookResult.rejected(summaryMesssage, detailedMessage);

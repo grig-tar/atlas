@@ -9,8 +9,8 @@
         {param id: 'startTime' /}
         {param value: $config['startTime'] /}
         {param labelContent: getText('workhours.config.labelStart') /}
-        {param placeholderText: '10:00' /}
-        {param isRequired: 'true' /}
+        {param placeholderText: '9:00' /}
+        {param isRequired: true /}
         {param fieldWidth: 'short' /}
         {param errorTexts: $errors ? $errors['startTime'] : null /}
     {/call}
@@ -18,7 +18,7 @@
         {param id: 'endTime' /}
         {param value: $config['endTime'] /}
         {param labelContent: getText('workhours.config.labelEnd') /}
-        {param placeholderText: '18:00' /}
+        {param placeholderText: '16:00' /}
         {param isRequired: true /}
         {param fieldWidth: 'short' /}
         {param errorTexts: $errors ? $errors['endTime'] : null /}

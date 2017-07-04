@@ -1,2 +1,1 @@
 Run with: atlas-run -u 6.3.0
-Known issues: plugin check only server time and ignore client's timezone.
